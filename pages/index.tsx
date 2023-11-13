@@ -1,8 +1,7 @@
 import NavbarNew from "@/app/components/cobaNav";
-import "../app/globals.css";
 import HomePage from "@/app/components/homePage";
 import UseCheck from "@/app/hooks/useCheck";
-import CreatePost from "@/app/components/createPost";
+import "../app/globals.css";
 
 export default function Home() {
   UseCheck();

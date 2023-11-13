@@ -1,8 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import UseCheck from "../hooks/useCheck";
 import UseRegister from "../hooks/useRegister";
 
 const RegisterForm = () => {

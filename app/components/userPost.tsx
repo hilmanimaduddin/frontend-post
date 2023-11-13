@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import CardPost from "./cardPost";
-import { Post } from "../type/interface";
-import useData from "../hooks/useDataUser";
 import useGetDataUser from "../hooks/useDataUser";
+import { Post } from "../type/interface";
+import CardPost from "./cardPost";
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -173,7 +172,6 @@ const HomePage = () => {
         <div className="flex justify-center my-4">
           <button
             onClick={() => setCurrentPage(currentPage - 1)}
-            // disabled={loading || currentPage === 1}
             className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
           >
             Previous
@@ -181,7 +179,6 @@ const HomePage = () => {
           <span className="text-xl font-bold">{currentPage}</span>
           <button
             onClick={() => setCurrentPage(currentPage + 1)}
-            // disabled={loading}
             className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2"
           >
             Next

@@ -15,13 +15,9 @@ export default function UseLogin() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    // Proses logika login di sini
-
-    // Contoh: Output data formulir ke konsol
     console.log("Form Data:", formData);
     postData(formData);
 
-    // Reset formulir setelah login
     setFormData({
       email: "",
       password: "",

@@ -11,8 +11,8 @@ export function ChangePassword() {
   );
 }
 
-import React, { useState } from "react";
 import UseCheck from "@/app/hooks/useCheck";
+import { useState } from "react";
 
 const ChangePasswordForm = () => {
   UseCheck();

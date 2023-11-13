@@ -81,11 +81,6 @@ export default function UseRegister() {
         },
         body: formData,
       });
-      console.log("coba", formData);
-
-      console.log("upload", upload);
-
-      console.log("loginResponse", loginResponse);
 
       router.push("/");
     } catch (error) {
