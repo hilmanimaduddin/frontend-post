@@ -81,7 +81,7 @@ const DetailPage = () => {
 
   async function postData(data: any, image: any) {
     try {
-      const post = await fetch("http://localhost:4000/user", {
+      const post = await fetch(`http://localhost:4000/post/${id?.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -109,6 +109,7 @@ const DetailPage = () => {
           throw new Error("Network response was not ok");
         }
       }
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }

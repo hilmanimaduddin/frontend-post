@@ -103,6 +103,7 @@ const UpdateProfileForm = () => {
           throw new Error("Network response was not ok");
         }
       }
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }

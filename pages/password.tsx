@@ -1,4 +1,4 @@
-import NavbarNew from "@/app/components/cobaNav";
+import NavbarNew from "@/app/components/navbar";
 import "../app/globals.css";
 
 export function ChangePassword() {
@@ -53,6 +53,7 @@ const ChangePasswordForm = () => {
       newPassword: "",
       confirmNewPassword: "",
     });
+    window.location.reload();
   };
 
   function postData(data: any) {

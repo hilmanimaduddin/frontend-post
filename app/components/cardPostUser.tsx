@@ -13,7 +13,7 @@ type CardProps = {
   userPost: string;
 };
 
-const CardPost = ({
+const CardPostUser = ({
   id,
   imageSrc,
   caption,
@@ -44,6 +44,7 @@ const CardPost = ({
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+      console.log("deleted", res);
     } catch (error) {
       console.log(error);
     }
@@ -125,6 +126,7 @@ const CardPost = ({
       </div>
       <div className="mb-2">
         <p className="text-lg font-bold">{userPost}</p>
+
         <p className="text-lg font-bold">{caption}</p>
       </div>
       <div className="mb-2">
@@ -152,8 +154,21 @@ const CardPost = ({
           </button>
         </div>
       </div>
+      <div>
+        <button
+          className="bg-red-500 text-white px-4 py-2 rounded-md ml-1"
+          onClick={handleDelete}
+        >
+          Delete
+        </button>
+        <Link href={`/detail/${id}`}>
+          <button className="bg-green-500 text-white px-4 py-2 rounded-md ml-1">
+            Edit
+          </button>
+        </Link>
+      </div>
     </div>
   );
 };
 
-export default CardPost;
+export default CardPostUser;

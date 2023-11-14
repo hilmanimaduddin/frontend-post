@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import useGetDataUser from "../hooks/useDataUser";
 import { Post } from "../type/interface";
-import CardPost from "./cardPost";
+import CardPostUser from "./cardPostUser";
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -152,7 +152,7 @@ const HomePage = () => {
       <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
         {/* {data.map((item, index) => ( */}
         {(data || []).map((item, index) => (
-          <CardPost
+          <CardPostUser
             key={index}
             id={item?.id}
             imageSrc={

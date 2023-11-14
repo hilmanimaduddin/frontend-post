@@ -74,6 +74,7 @@ export default function useGetDataUser() {
       if (!upload.ok) {
         throw new Error("Network response was not ok");
       }
+      window.location.reload();
       fetchData();
 
       console.log("upload", upload);

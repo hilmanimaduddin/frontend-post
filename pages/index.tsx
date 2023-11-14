@@ -1,4 +1,4 @@
-import NavbarNew from "@/app/components/cobaNav";
+import NavbarNew from "@/app/components/navbar";
 import HomePage from "@/app/components/homePage";
 import UseCheck from "@/app/hooks/useCheck";
 import "../app/globals.css";
