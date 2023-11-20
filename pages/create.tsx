@@ -1,17 +1,14 @@
 "use client";
 
 import NavbarNew from "@/app/components/navbar";
-import HomePage from "@/app/components/homePage";
-import UseCheck from "@/app/hooks/useCheck";
 import "../app/globals.css";
+import CreatePost from "@/app/components/createPost";
 
-export default function Home() {
-  UseCheck();
-
+export default function CreatePage() {
   return (
     <div>
       <NavbarNew>
-        <HomePage />
+        <CreatePost />
       </NavbarNew>
     </div>
   );

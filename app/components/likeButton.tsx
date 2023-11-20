@@ -1,26 +1,26 @@
 // LikeButton.tsx
 
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { API } from "../libs/api";
 
 type LikeButtonProps = {
   postId: string;
 };
 
 const LikeButton: React.FC<LikeButtonProps> = ({ postId }) => {
-  const router = useRouter();
   const [liked, setLiked] = useState(false);
 
   const handleLike = async () => {
-    // Implementasi logika untuk mengirim data ke backend (misalnya, menggunakan fetch)
     try {
-      const res = await fetch(`/api/like/${postId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ liked: !liked }),
-      });
+      const res = await API.post(
+        `/api/like/${postId}`,
+        JSON.stringify({ liked: !liked }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (res.ok) {
         setLiked(!liked);

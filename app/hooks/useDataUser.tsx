@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Post } from "../type/interface";
+import { API } from "../libs/api";
+import { useRouter } from "next/navigation";
 
 export default function useGetDataUser() {
+  const router = useRouter();
   const [data, setData] = useState<Post[]>([]);
 
   console.log("data", data);
@@ -41,58 +44,48 @@ export default function useGetDataUser() {
   async function postData(data: any, image: any) {
     const formData = new FormData();
     formData.append("file", image);
+    console.log("imagee", image);
 
     try {
-      const post = await fetch("http://localhost:4000/post", {
-        method: "POST",
+      const post = await API.post("/post", data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(data),
       });
       console.log("post", post);
 
-      const get = await post.json();
-      console.log("get", get);
+      console.log("formData", formData);
+      if (image) {
+        console.log("gdih", image);
 
-      if (!post.ok) {
-        throw new Error("Network response was not ok");
+        const upload = await API.post(
+          `/post/upload/${post?.data?.post?.id}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        console.log("upload", upload);
       }
-
-      const upload = await fetch(
-        `http://localhost:4000/post/upload/${get.post.id}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: formData,
-        }
-      );
-
-      if (!upload.ok) {
-        throw new Error("Network response was not ok");
-      }
-      window.location.reload();
-      fetchData();
-
-      console.log("upload", upload);
+      router.push("/post");
+      // window.location.reload();
     } catch (error) {
       console.log(error);
     }
   }
   async function fetchData() {
     try {
-      const res = await fetch("http://localhost:4000/post", {
-        method: "GET",
+      const res = await API.get("/post", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      const data = await res.json();
-      setData(data.posts);
+      // setData(data.posts);
     } catch (error) {
       console.log(error);
     }

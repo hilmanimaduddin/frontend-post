@@ -2,6 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { API } from "../libs/api";
 
 const DetailPage = () => {
   const id = useParams();
@@ -18,23 +19,20 @@ const DetailPage = () => {
 
   async function fetchData() {
     try {
-      const res = await fetch(`http://localhost:4000/post/${id?.id}`, {
-        method: "GET",
+      const res = await API.get(`/post/${id?.id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      const geting = await res.json();
-      const data = geting.post;
+      const data = res.data?.post;
       console.log("datasdqwdswq :", data);
       setFormData({
         tags: data.tags,
         caption: data.caption,
         image: null,
       });
-      const image = `http://localhost:4000/display/${data?.image}`;
-      setPreviewImage(image as string | null);
+      setPreviewImage(data?.image);
     } catch (error) {
       console.log(error);
     }
@@ -71,7 +69,6 @@ const DetailPage = () => {
       caption: formData.caption,
     };
     postData(data, formData.image);
-    // Reset form fields
     setFormData({
       tags: "",
       caption: "",
@@ -81,33 +78,26 @@ const DetailPage = () => {
 
   async function postData(data: any, image: any) {
     try {
-      const post = await fetch(`http://localhost:4000/post/${id?.id}`, {
-        method: "PUT",
+      const post = await API.put(`/post/${id?.id}`, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(data),
       });
-      if (!post.ok) {
-        throw new Error("Network response was not ok");
-      }
+      console.log("post", post);
+
       const formData = new FormData();
       formData.append("file", image);
       if (image !== null) {
         console.log("image", image);
 
-        const upload = await fetch(`http://localhost:4000/auth/upload`, {
-          method: "POST",
+        const upload = await API.post(`/post/upload/${id?.id}`, formData, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: formData,
         });
 
-        if (!upload.ok) {
-          throw new Error("Network response was not ok");
-        }
+        console.log("post", post);
       }
       window.location.reload();
     } catch (error) {

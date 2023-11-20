@@ -1,14 +1,5 @@
-// import axios from "axios";
+const axios = require("axios");
 
-// export const API = axios.create({
-// baseURL: "http://localhost:5000/api/v1",
-//  baseURL: "https://circle-back.vercel.app/api/v1",
-// });
-
-// export function setAuthToken(token: string) {
-//   if (token) {
-//     API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-//   } else {
-//     delete API.defaults.headers.common["Authorization"];
-//   }
-// }
+export const API = axios.create({
+  baseURL: "http://localhost:4000",
+});

@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { API } from "../libs/api";
 
 export default function UseLogin() {
   const router = useRouter();
@@ -26,17 +27,14 @@ export default function UseLogin() {
 
   async function postData(data: any) {
     try {
-      const post = await fetch("http://localhost:4000/auth/login", {
-        method: "POST",
+      const post = await API.post("/auth/login", data, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
       });
+      console.log("post", post);
 
-      const response = await post.json();
-      console.log("response", response);
-      localStorage.setItem("token", response.access_token);
+      localStorage.setItem("token", post?.data?.access_token);
 
       router.push("/");
     } catch (error) {

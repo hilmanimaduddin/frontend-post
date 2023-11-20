@@ -3,9 +3,20 @@
 import { useEffect, useState } from "react";
 import { Post } from "../type/interface";
 import CardPost from "./cardPost";
+import { API } from "../libs/api";
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const cobaa = localStorage.token;
+      console.log("cobaa", cobaa);
+      setToken(cobaa);
+    }
+  }, []);
+  console.log("token", token);
 
   const [data, setData] = useState<Post[]>([]);
 
@@ -19,26 +30,20 @@ const HomePage = () => {
 
   console.log("data", data);
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
   async function fetchData() {
     try {
-      const res = await fetch(
-        `http://localhost:4000/post?page=${
-          currentPage - 1
-        }&query=${searchQuery}`,
+      const res = await API.get(
+        `/post?page=${currentPage - 1}&query=${searchQuery}`,
         {
-          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      const response = await res.json();
-      setData(response.posts);
+      console.log("res", res);
+
+      setData(res?.data?.posts);
     } catch (error) {
       console.log(error);
     }
@@ -92,8 +97,8 @@ const HomePage = () => {
             id={item?.id}
             imageSrc={
               item?.image
-                ? `http://localhost:4000/display/${item?.image}`
-                : "https://devfortest.my.id/uploads/1699502134882.png"
+                ? item?.image
+                : "https://res.cloudinary.com/ruparupa-com/image/upload/f_auto,q_auto/v1686488615/Products/10530838_1.jpg"
             }
             caption={item?.caption}
             tags={item?.tags}

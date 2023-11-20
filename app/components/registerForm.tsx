@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import UseRegister from "../hooks/useRegister";
 
 const RegisterForm = () => {
@@ -85,16 +86,24 @@ const RegisterForm = () => {
             id="image"
             name="file"
             className="mt-1 p-2 w-full border rounded-md"
-            accept="image/*" // Hanya izinkan tipe file gambar
+            accept="image/*"
             onChange={handleChange}
           />
         </div>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-md"
-        >
-          Register
-        </button>
+        <div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white py-2 px-4 rounded-md"
+          >
+            Register
+          </button>
+          <p>
+            Already have an account?
+            <Link href="/login">
+              <span className="text-blue-500">Login</span>
+            </Link>
+          </p>
+        </div>
       </form>
     </div>
   );

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import UseLogin from "../hooks/useLogin";
 
 const LoginForm = () => {
@@ -39,12 +40,20 @@ const LoginForm = () => {
             value={formData.password}
           />
         </div>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-md"
-        >
-          Login
-        </button>
+        <div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white py-2 px-4 rounded-md"
+          >
+            Login
+          </button>
+          <p>
+            Haven't registered yet?{" "}
+            <Link href="/register">
+              <span className="text-blue-500">Register</span>
+            </Link>
+          </p>
+        </div>
       </form>
     </div>
   );

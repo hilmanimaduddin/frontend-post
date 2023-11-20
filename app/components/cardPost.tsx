@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { API } from "../libs/api";
 
 type CardProps = {
   id: string;
@@ -22,57 +23,44 @@ const CardPost = ({
   dislikes,
   userPost,
 }: any) => {
-  console.log("image", imageSrc);
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const cobaa = localStorage.token;
+      setToken(cobaa);
+    }
+  }, []);
 
   const lik = likes.filter((item: any) => item.liked === true);
   const dis = likes.filter((item: any) => item.liked === false);
-  console.log("lik", lik);
-  console.log("dis", dis);
 
   const [like, setLike] = React.useState(lik.length);
   const [dislike, setDislike] = React.useState(dis.length);
   const [liked, setLiked] = React.useState(false);
   const [disliked, setDisliked] = React.useState(false);
-  console.log("like  ::", likes);
-
-  const handleDelete = async () => {
-    try {
-      const res = await fetch(`http://localhost:4000/post/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleLike = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/post/like/${id}`, {
-        method: "POST",
+      const res = await API.post(`/post/like/${id}`, null, {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      const data = await res.json();
-      console.log("hcehd");
+      console.log("res", res);
+      if (res.data.error == "Failed to like post") {
+        throw new Error(`Failed to like post: ${res?.data?.message?.name}`);
+      }
 
-      console.log("data", data?.message);
-      console.log(typeof data?.message);
-      if (data?.message == "Like created successfully") {
+      if (res?.data?.message == "Like created successfully") {
         console.log("liked");
-
         setDisliked(true);
         setLike(like + 1);
-      } else if (data?.message == "Like deleted successfully") {
+      } else if (res?.data?.message == "Like deleted successfully") {
         console.log("unliked");
         setDisliked(true);
         setLike(like - 1);
-      } else if (data?.message == "Like updated successfully") {
+      } else if (res?.data?.message == "Like updated successfully") {
         setDisliked(true);
         setLike(like + 1);
         setDislike(dislike - 1);
@@ -84,28 +72,25 @@ const CardPost = ({
 
   const handleDislike = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/post/unlike/${id}`, {
-        method: "POST",
+      const res = await API.post(`/post/unlike/${id}`, null, {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
+      console.log("res", res);
+      if (res.data.error == "Failed to like post") {
+        throw new Error(`Failed to unlike post: ${res?.data?.message?.name}`);
+      }
 
-      const data = await res.json();
-      console.log("hcehd");
-
-      console.log("data", data?.message);
-      console.log(typeof data?.message);
-      if (data?.message == "Like created successfully") {
+      if (res?.data?.message == "Like created successfully") {
         console.log("liked");
         setLiked(true);
         setDislike(dislike + 1);
-      } else if (data?.message == "Like deleted successfully") {
+      } else if (res?.data?.message == "Like deleted successfully") {
         setDislike(dislike - 1);
         console.log("unliked");
         setLiked(true);
-      } else if (data?.message == "Like updated successfully") {
+      } else if (res?.data?.message == "Like updated successfully") {
         setDislike(dislike + 1);
         setLike(like - 1);
       }

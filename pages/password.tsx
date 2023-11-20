@@ -1,18 +1,9 @@
 import NavbarNew from "@/app/components/navbar";
 import "../app/globals.css";
 
-export function ChangePassword() {
-  return (
-    <div>
-      <NavbarNew>
-        <h1>Change Password</h1>
-      </NavbarNew>
-    </div>
-  );
-}
-
 import UseCheck from "@/app/hooks/useCheck";
 import { useState } from "react";
+import { API } from "@/app/libs/api";
 
 const ChangePasswordForm = () => {
   UseCheck();
@@ -37,11 +28,6 @@ const ChangePasswordForm = () => {
       alert("New password and confirm new password do not match.");
       return;
     }
-    // Handle form submission logic here
-    console.log("Old Password:", formData.oldPassword);
-    console.log("New Password:", formData.newPassword);
-    console.log("Confirm New Password:", formData.confirmNewPassword);
-    // Reset form fields
     const data = {
       oldPassword: formData.oldPassword,
       newPassword: formData.newPassword,
@@ -53,22 +39,22 @@ const ChangePasswordForm = () => {
       newPassword: "",
       confirmNewPassword: "",
     });
-    window.location.reload();
   };
 
-  function postData(data: any) {
+  async function postData(data: any) {
     console.log("data :", data);
-
     try {
-      const post = fetch("http://localhost:4000/user/change-password", {
-        method: "PUT",
+      const post = await API.put("/user/change-password", data, {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(data),
       });
       console.log("post", post);
+      if (post.data.error) {
+        alert(post.data.error);
+      } else {
+        alert("change password success");
+      }
     } catch (error) {
       console.log(error);
     }

@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { API } from "../libs/api";
 
 export default function UseRegister() {
   const router = useRouter();
@@ -39,52 +40,35 @@ export default function UseRegister() {
   };
 
   async function postData(data: any, image: any) {
-    const imageUpload = {
-      file: image,
-    };
-
     const formData = new FormData();
     formData.append("file", image);
-
-    console.log("imageUpload", imageUpload);
-
     try {
-      const post = await fetch("http://localhost:4000/auth/register", {
-        method: "POST",
+      await API.post("/auth/register", data, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
       });
 
-      if (!post.ok) {
-        throw new Error("Network response was not ok");
+      const login = await API.post(
+        "/auth/login",
+        JSON.stringify({ email: data.email, password: data.password }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      localStorage.setItem("token", login?.data?.access_token);
+      if (image) {
+        await API.post("/auth/upload", formData, {
+          headers: {
+            Authorization: `Bearer ${login?.data?.access_token}`,
+          },
+        });
       }
-
-      const response = await post.json();
-      console.log("response", response);
-
-      const login = await fetch("http://localhost:4000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: data.email, password: data.password }),
-      });
-      const loginResponse = await login.json();
-      localStorage.setItem("token", loginResponse.access_token);
-
-      const upload = await fetch("http://localhost:4000/auth/upload", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${loginResponse.access_token}`,
-        },
-        body: formData,
-      });
-
       router.push("/");
     } catch (error) {
-      console.error(error);
+      console.error("error", error);
     }
   }
   return {

@@ -13,6 +13,11 @@ const NavbarNew = ({ children }: NavbarProps) => {
     setIsNavOpen(!isNavOpen);
   };
 
+  function logout() {
+    localStorage.removeItem("token");
+    window.location.reload();
+  }
+
   return (
     <div className="bg-gray-100">
       <div className="bg-gray-800 text-white p-4 flex justify-between items-center fixed w-full z-50">
@@ -69,6 +74,9 @@ const NavbarNew = ({ children }: NavbarProps) => {
               <li className="p-2 hover:bg-gray-600">Post</li>
             </Link>
           </ul>
+          <button onClick={logout} className="p-2 hover:bg-gray-600 w-full">
+            Logout
+          </button>
         </div>
 
         <div className="hidden md:flex flex-col w-64 bg-gray-800 text-white">
@@ -86,6 +94,12 @@ const NavbarNew = ({ children }: NavbarProps) => {
               <li className="p-2 hover:bg-gray-600">Post</li>
             </Link>
           </ul>
+          <button
+            onClick={logout}
+            className="mt-auto p-2 hover:bg-gray-600 rounded-b "
+          >
+            Logout
+          </button>
         </div>
 
         <div className="flex-grow p-4 overflow-y-auto mt-16">{children}</div>
